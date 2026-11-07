@@ -402,7 +402,7 @@ function Poster({ chapter, visible }: { chapter: ChapterId; visible: boolean }) 
       {ids.map((id, i) => (
         <img
           key={id}
-          src={`/posters/${id}.jpg`}
+          src={`${import.meta.env.BASE_URL}posters/${id}.jpg`}
           alt=""
           decoding="async"
           fetchPriority={i === 0 ? 'high' : 'low'}

@@ -32,7 +32,7 @@ export default function App() {
     if (!webglInitial) {
       const img = new Image()
       img.onload = img.onerror = () => setLoad(100)
-      img.src = '/posters/surface.jpg'
+      img.src = `${import.meta.env.BASE_URL}posters/surface.jpg`
     }
   }, [webglInitial])
 

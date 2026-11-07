@@ -1,0 +1,176 @@
+@import '@fontsource-variable/bodoni-moda/opsz.css';
+@import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+@import '@fontsource-variable/jost/wght.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import 'lenis/dist/lenis.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-pearl: #fbf8f4;
+  --color-porcelain: #f3ece5;
+  --color-nude: #e6d5c7;
+  --color-nude-deep: #cdb5a3;
+  --color-ink: #1c1411;
+  --color-ink-soft: #4a3b34; /* 9.9:1 on porcelain */
+  --color-ink-mute: #6b5a51; /* 5.6:1 on porcelain: AA body */
+  --color-espresso: #0d0908;
+  --color-espresso-2: #17100d;
+  --color-rose: #e7b79b; /* luminous accent, use on dark */
+  --color-rose-deep: #8a553f; /* accent text on light, 5.4:1 on porcelain */
+  --color-line: rgb(28 20 17 / 0.14);
+  --color-line-dark: rgb(251 248 244 / 0.16);
+
+  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', 'Didot', Georgia, serif;
+  --font-sans: 'Jost Variable', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-silk: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-espresso);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-porcelain);
+    overflow-x: clip;
+    font-weight: 380;
+  }
+  ::selection {
+    background: var(--color-rose);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 1.5px solid var(--color-rose-deep);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-rose);
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: -4rem;
+    z-index: 1000;
+    background: var(--color-ink);
+    color: var(--color-pearl);
+    padding: 0.75rem 1.25rem;
+    font: 500 0.8rem/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: top 0.3s var(--ease-luxe);
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .hairline {
+    height: 1px;
+    background: currentColor;
+    opacity: 0.18;
+  }
+
+  /* Split-text masks */
+  .split-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .split-word {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  /* Film grain overlay: pure CSS + inline SVG noise, no images */
+  .grain {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 90;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 0.9s steps(6) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-4%, 3%); }
+    40% { transform: translate(3%, -5%); }
+    60% { transform: translate(-6%, -2%); }
+    80% { transform: translate(5%, 4%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes sweep {
+    from { transform: translateX(0) skewX(-12deg); }
+    to { transform: translateX(400%) skewX(-12deg); }
+  }
+  @keyframes scrollcue {
+    0% { transform: translateY(-100%); }
+    60%, 100% { transform: translateY(200%); }
+  }
+
+  .placeholder-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font: 500 0.625rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.55rem;
+    border: 1px dashed currentColor;
+    border-radius: 999px;
+  }
+}
+
+@media (pointer: fine) {
+  .has-custom-cursor,
+  .has-custom-cursor a,
+  .has-custom-cursor button,
+  .has-custom-cursor label,
+  .has-custom-cursor input[type='range'] {
+    cursor: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
